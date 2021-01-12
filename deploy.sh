@@ -1,3 +1,3 @@
 #!/bin/bash
 
-near deploy --wasmFile res/dummy.wasm --initFunction "new" --initArgs '' --accountId $1.testnet
+near deploy --wasmFile res/struct_init.wasm --initFunction "new" --initArgs '{"wrap": {"a": "some string"}}' --accountId $1.testnet

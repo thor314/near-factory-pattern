@@ -1,32 +1,20 @@
-# Template for a NEAR project
+# Demonstration Goals:
+- Write a deploy method for a contract that accepts a custom `struct` as argument for its constructor
+- Write a contract that demonstrates the factory pattern, deploying other contracts to subaddresses
 
-Contains:
-- a setup script
-- Cargo.toml setup with simulation testing and NEAR sdk crates
-- build and deploy scripts
-- a src directory containing lib.rs, with common imports and ignore attributes
-- a test directory containing a simulation test setup
-- my preferred .gitignore and .rustfmt.toml setup
+# Reproduce:
+1. visit https://wallet.testnet.near.org/profile and create a new test account, YOU
+2. `near login`
+3. `./build.sh`
+4. `./deploy.sh YOU`
+5. `./sub_deploy.sh YOU`
+Note that deploying the sub_accounts requires more than the default amount of gas.
 
-## Setup script usage:
-`./setup.sh my_project_name`
-will change all instances of "dummy" to whatever you'd like to call this project, and rename this
-README to `instructions.md`.
+Optionally:
+`./delete_accounts.sh YOU` to delete subaccount 1.
 
-## Build script usage:
-`./build.sh` to build the wasm blob. The wasm blob will be copied into `res/`.
+current error on call:
+`near call $1.testnet deploy_subaccount1 '{"wrap": {"a": "some string"}, "sub": "1"}' --accountId $1.testnet
+--amount 50 --gas 150000000000000`
 
-## Deploy script usage:
-`./deploy.sh MYADDRESS` to deploy your wasm blob to the NEAR testnet.
-
-Note that if you change the constructor arguments, You will have to modify the arguments int the `deploy.sh`
-script. If my constructor is `new(name: String, number: u32) -> Self`, and I want to initialize with ("Todd", 1), I
-will change the script to:
-
-`near deploy --wasmFile res/dummy.wasm --initFunction "new" --initArgs '{"name": "Todd", "number": 1}' --accountId $1.testnet`
-
-and call `./deploy MYADDRESS`, or to provide arguments, change `deploy.sh` to:
-
-`near deploy --wasmFile res/dummy.wasm --initFunction "new" --initArgs "{\"name\": $1, \"number\": $2}" --accountId $1.testnet`
-
-and call `./deploy MYADDRESS MYNAME MYNUM`.
+`Failure [mb12.testnet]: Error: The account 1.mb12.testnet wouldn't have enough balance to cover storage, required to have 106084300000000000000000000`
